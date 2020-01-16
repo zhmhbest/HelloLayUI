@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>数据表格</title>
+    <link rel="stylesheet" href="lib/layui/css/layui.css"/>
+    <script src="lib/layui/layui.js"></script>
+    <style>
+        .container {
+            margin: 50px 10% 5%;
+        }
+        h2 {
+            margin-top: 40px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+
+<div class="container">
+    <table id="data_table" lay-filter="data_table"></table>
+    <script type="text/html" id="data_table_bar">
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
+</div>
+
+
+<script>
+    //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+    layui.use('table', function(){
+        var $ = layui.jquery;
+        var table = layui.table;
+
+        //执行渲染
+        var tableIns = table.render({
+            elem: '#data_table', //指定原始表格元素选择器（推荐id选择器）
+            // height: 500, //容器高度
+            url: 'http://127.0.0.1:5000/api/personnel/filter',
+            method: 'POST',
+            where: {
+                'uid': 1,
+                'token': '4f04744145860addb4e98af6a5bfddfc'
+            },
+            page: true, // 开启分页
+            toolbar: 'default',
+            parseData: function(res) { //res 即为原始返回的数据
+                // console.log(res);
+                return {
+                    "code": (1 === parseInt(res['code']))? 0 : 1, //解析接口状态
+                    "msg": res['msg'], //解析提示文本
+                    "count": res['count'], //解析数据长度
+                    "data": res['data'] //解析数据列表
+                };
+            },
+            cols: [[ //表头
+                {type: 'checkbox', fixed: 'left'},
+                {field: 'uid', title: 'ID', width: '8%', sort: true, fixed: 'left'},
+                {field: 'name', title: '姓名', width: '10%'},
+                {field: 'gender', title: '性别', width: '5%', sort: true},
+                {field: 'birth', title: '出生日期', width: '10%', sort: true},
+                {field: 'phone', title: '手机', width: '10%'},
+                {field: 'mail', title: '邮箱', width: '15%'},
+                {field: 'address', title: '地址', width: '32%'},
+                {field: 'enter', title: '入职时间', width: '10%'},
+                {fixed: 'right', width: 165, align:'center', toolbar: '#data_table_bar'}
+            ]]
+        });
+
+        //监听头工具栏事件
+        table.on('toolbar(data_table)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            console.log(obj);
+            console.log(checkStatus.isAll);
+            console.log(obj.event);
+            console.log(checkStatus.data);
+        });
+
+        //监听行工具事件
+        table.on('tool(data_table)', function(obj){
+            var item_data = obj.data;
+            console.log(item_data);
+            console.log(obj.event);
+        });
+
+    });
+</script>
+</body>
+</html>
