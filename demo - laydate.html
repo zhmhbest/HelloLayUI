@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title>layDate独立版</title>
+    <script src="lib/laydate/laydate.js"></script>
+</head>
+<body>
+<div style="margin-left: 15%; margin-right: 15%">
+    <ul>
+        <li><label for="demo_datetime">获取日期时间</label><input type="text" id="demo_datetime"></li>
+        <li><label for="demo_date">获取日期</label><input type="text" id="demo_date"></li>
+        <li><label for="demo_time">获取时间</label><input type="text" id="demo_time"></li>
+        <li><label for="demo_year">获取年</label><input type="text" id="demo_year"></li>
+        <li><label for="demo_month">获取年月</label><input type="text" id="demo_month"></li>
+    </ul>
+    <script>
+        laydate.render({
+            elem: '#demo_datetime',
+            type: 'datetime'
+        });
+        laydate.render({
+            elem: '#demo_date',
+            type: 'date'
+        });
+        laydate.render({
+            elem: '#demo_time',
+            type: 'time'
+        });
+        laydate.render({
+            elem: '#demo_year',
+            type: 'year'
+        });
+        laydate.render({
+            elem: '#demo_month',
+            type: 'month'
+        });
+    </script>
+
+
+    <ul>
+        <li><label for="demo_range_datetime">日期时间范围</label><input type="text" id="demo_range_datetime"></li>
+        <li><label for="demo_range_date">日期范围</label><input type="text" id="demo_range_date"></li>
+        <li><label for="demo_range_time">时间范围</label><input type="text" id="demo_range_time"></li>
+        <li><label for="demo_range_year">年范围</label><input type="text" id="demo_range_year"></li>
+        <li><label for="demo_range_month">年月范围</label><input type="text" id="demo_range_month"></li>
+    </ul>
+    <script>
+        laydate.render({
+            elem: '#demo_range_datetime',
+            type: 'datetime',
+            range: true
+        });
+        laydate.render({
+            elem: '#demo_range_date',
+            type: 'date',
+            range: true
+        });
+        laydate.render({
+            elem: '#demo_range_time',
+            type: 'time',
+            range: true
+        });
+        laydate.render({
+            elem: '#demo_range_year',
+            type: 'year',
+            range: true
+        });
+        laydate.render({
+            elem: '#demo_range_month',
+            type: 'month',
+            range: true
+        });
+    </script>
+
+
+    <ul>
+        <li><label for="demo_confine_date1">限定可选日期（限定范围）</label><input type="text" id="demo_confine_date1"></li>
+        <li><label for="demo_confine_date2">限定可选日期（前后几天）</label><input type="text" id="demo_confine_date2"></li>
+        <li><label for="demo_confine_time">限定可选时间（限定范围）</label><input type="text" id="demo_confine_time"></li>
+    </ul>
+    <script>
+        laydate.render({
+            elem: '#demo_confine_date1',
+            type: 'date',
+            min: '2020-01-10',
+            max: '2020-01-31'
+        });
+        laydate.render({
+            elem: '#demo_confine_date2',
+            type: 'date',
+            min: -3,
+            max: 3
+        });
+        laydate.render({
+            elem: '#demo_confine_time',
+            type: 'time',
+            min: '17:30:00',
+            max: '24:00:00'
+        });
+    </script>
+
+
+    <ul>
+        <li><label for="demo_event_done">日期选择事件</label><input type="text" id="demo_event_done"></li>
+        <li><label for="demo_event_change">日期修改事件</label><input type="text" id="demo_event_change"></li>
+    </ul>
+    <script>
+        laydate.render({
+            elem: '#demo_event_done',
+            done: function(value, date){
+                alert('Done 日期：' + value + '\n对象' + JSON.stringify(date));
+            }
+        });
+        laydate.render({
+            elem: '#demo_event_change',
+            change: function(value, date){
+                alert('Change 日期：' + value + '\n\n对象' + JSON.stringify(date));
+            }
+        });
+    </script>
+
+
+    <ul>
+        <li><label for="demo_theme1">主题：墨绿</label><input type="text" id="demo_theme1"></li>
+        <li><label for="demo_theme2">主题：DiY</label><input type="text" id="demo_theme2"></li>
+        <li><label for="demo_theme3">主题：格子</label><input type="text" id="demo_theme3"></li>
+    </ul>
+    <script>
+        laydate.render({
+            elem: '#demo_theme1',
+            theme: 'molv'
+        });
+        laydate.render({
+            elem: '#demo_theme2',
+            theme: '#393D49'
+        });
+        laydate.render({
+            elem: '#demo_theme3',
+            theme: 'grid'
+        });
+    </script>
+
+    <ul>
+        <li>静态展示</li>
+    </ul>
+    <div>
+        <div id="demo_static_date" style="display: inline-block"></div>
+        <div id="demo_static_time" style="display: inline-block"></div>
+    </div>
+    <script>
+        var static_datetime = {
+            'year': null,
+            'month': null,
+            'day': null,
+            'hours': null,
+            'minutes': null,
+            'seconds': null
+        };
+        laydate.render({
+            elem: '#demo_static_date',
+            type: 'date',
+            position: 'static',
+            change: function(value, date){
+                static_datetime['year'] = date['year'];
+                static_datetime['month'] = date['month'];
+                static_datetime['day'] = date['date'];
+                console.log(static_datetime);
+            }
+        });
+        laydate.render({
+            elem: '#demo_static_time',
+            type: 'time',
+            position: 'static',
+            change: function(value, date){
+                static_datetime['hours'] = date['hours'];
+                static_datetime['minutes'] = date['minutes'];
+                static_datetime['seconds'] = date['seconds'];
+                console.log(static_datetime);
+            }
+        });
+    </script>
+</div>
+</body>
+</html>
