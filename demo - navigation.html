@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>选项卡</title>
+    <link rel="stylesheet" href="lib/layui/css/layui.css"/>
+    <script src="lib/layui/layui.js"></script>
+    <style>
+        .container {
+            margin: 50px 10% 5%;
+        }
+        h2 {
+            margin-top: 40px;
+            margin-bottom: 5px;
+        }
+    </style>
+    <script>
+        /**
+         *
+         * @param {Object} mount_point
+         * @param {Array} menu_data [
+         *     {
+         *         title:
+         *         click:
+         *         child:
+         *     }
+         * ]
+         * @param h_or_v: 'h' or 'v'
+         * @returns {boolean}
+         */
+        function makeNavigation(mount_point, menu_data, h_or_v) {
+            function valid_string(class_name) {
+                return 'string' === typeof class_name && '' !== class_name
+            }
+            function wrapA(elem, title, href) {
+                var a = document.createElement('a');
+                a.setAttribute('href', href);
+                a.innerHTML = title;
+                elem.appendChild(a);
+            }
+            function createElementWithClassMountOn(label_name, class_name, parent) {
+                var elem = document.createElement(label_name);
+                if (valid_string(class_name)) {
+                    elem.setAttribute('class', class_name);
+                }
+                parent.appendChild(elem);
+                return elem;
+            }
+
+            if (! mount_point instanceof Object) return false;
+            if (! menu_data instanceof Array)  return false;
+
+            var ul;
+            if ('h' === h_or_v) {
+                ul = createElementWithClassMountOn('ul', 'layui-nav layui-nav-tree layui-nav-side', mount_point);
+            } else {
+                ul = createElementWithClassMountOn('ul', 'layui-nav', mount_point);
+            }
+
+            for (var i in menu_data) {
+                var item = menu_data[i];
+                var li = createElementWithClassMountOn('li', 'layui-nav-item', ul);
+                if (item['child'] instanceof Array) {
+                    wrapA(li, item['title'], 'javascript:;');
+                    // 有子元素
+                    var dl = createElementWithClassMountOn('dl', 'layui-nav-child', li);
+                    for (var j in item['child']) {
+                        var child_item = item['child'][j];
+                        var dd = createElementWithClassMountOn('dd', '', dl);
+                        wrapA(dd, child_item['title'], 'javascript:;');
+                        dd.addEventListener('click', child_item['click']);
+                    }
+                } else {
+                    wrapA(li, item['title'], 'javascript:;');
+                    li.addEventListener('click', item['click']);
+                }
+            }
+            return true;
+        }
+    </script>
+</head>
+<body>
+
+
+<div class="container"></div>
+<script>
+    var container = document.getElementsByClassName('container')[0];
+    makeNavigation(container, [
+        {
+            title: "标题1",
+            click: function () {
+                console.log(this.children[0].innerHTML);
+            }
+        }, {
+            title: "标题2<span class='layui-badge-dot'>",
+            click: function () {
+                console.log(this.children[0].innerHTML);
+            }
+        }, {
+            title: "标题3",
+            child: [
+                {
+                    title: "标题3-1",
+                    click: function () {
+                        console.log(this.children[0].innerHTML);
+                    }
+                }, {
+                    title: "标题3-2",
+                    click: function () {
+                        console.log(this.children[0].innerHTML);
+                    }
+                }
+            ]
+        }
+    ], 'h');
+</script>
+
+
+<script>
+    //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function(){
+        var $ = layui.jquery;
+        var element = layui.element;
+    });
+</script>
+</body>
+</html>
