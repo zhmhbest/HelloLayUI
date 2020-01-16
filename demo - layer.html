@@ -343,14 +343,14 @@
         var index = layer.open({
             type: 1,
             title: '标题', // 标题
-            maxmin: true, // 开启最大化最小化按钮
+            // maxmin: true, // 开启最大化最小化按钮
             area: ['420px', '240px'], //宽高
             content: '<h2>HTML内容</h2>',
             cancel: function(){
                 layer.msg('关闭');
             }
         });
-        // layer.full(index); // 打开即全屏
+        layer.full(index); // 打开即全屏
     }));
 
     mountOnList(ul, createScriptButton('Page(Shade Close)', function () {
