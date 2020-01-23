@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>编辑帐号</title>
+    <link rel="stylesheet" href="../lib/layui/css/layui.css"/>
+</head>
+
+<body>
+
+<div style="margin-left: 10%; margin-right: 10%; margin-top: 50px">
+    <form lay-filter="lay-sub-form" class="layui-form layui-form-pane" action="">
+        <div class="layui-form-item" >
+            <label class="layui-form-label">姓名</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" required  lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item" pane>
+            <label class="layui-form-label">性别</label>
+            <div class="layui-input-block">
+                <input type="radio" name="gender" value="1" title="男" checked>
+                <input type="radio" name="gender" value="0" title="女">
+            </div>
+        </div>
+
+        <div class="layui-form-item" >
+            <label class="layui-form-label">手机</label>
+            <div class="layui-input-block">
+                <input type="text" name="phone" required  lay-verify="required|phone" placeholder="请输入手机号码" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item" >
+            <label class="layui-form-label">邮箱</label>
+            <div class="layui-input-block">
+                <input type="text" name="mail" required  lay-verify="required|email" placeholder="请输入邮箱地址" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item" >
+            <label class="layui-form-label">出生日期</label>
+            <div class="layui-input-block">
+                <input type="text" name="birth" required  lay-verify="required|date" placeholder="请选择出生日期" class="layui-input" id="laydate-date-birth">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">身份</label>
+            <div class="layui-input-block">
+                <select name="role" lay-verify="required">
+                    <option value=""></option>
+                    <option value="员工">员工</option>
+                    <option value="经理">经理</option>
+                    <option value="管理员">管理员</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">通讯地址</label>
+            <div class="layui-input-block">
+                <textarea name="address" placeholder="请输入通讯地址" class="layui-textarea"></textarea>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+
+<script src="../js/getparams.js"></script>
+<script src="../lib/layui/layui.js"></script>
+<script>
+    layui.use(['form', 'layer', 'laydate'], function(){
+        var form = layui.form;
+        var laydate = layui.laydate;
+        // 日期选择器
+        laydate.render({
+            elem: '#laydate-date-birth',
+            type: 'date'
+        });
+        laydate.render({
+            elem: '#laydate-date-enter',
+            type: 'date'
+        });
+        // 初始化数据
+        (function () {
+            var data = paramsParseHash();
+            // console.log(data);
+            form.val("lay-sub-form", data);
+        })();
+    });
+</script>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>弹窗式表单</title>
+    <script src="lib/jquery-1.7.2.min.js"></script>
+    <script src="lib/layer/layer.js"></script>
+    <script src="js/getparams.js"></script>
+    <script src="js/layerdom.js"></script>
+</head>
+<body>
+    <button onclick="onClick();">测试</button>
+</body>
+<script>
+    function onClick() {
+        layer.open({
+            type: 2,
+            shadeClose: true,
+            title: '编辑用户', // 标题
+            content: './html/edit.html#' + params2String({
+                name: '张3',
+                gender: 0,
+                phone: 11100008888,
+                birth: '1996-10-16',
+                mail: 'none@mail.com',
+                role: '管理员',
+                address: '上海东方明珠'
+            }),
+            area: ['50%', '90%'],
+            btn: ['保存', '取消'],
+            yes: function(index, layero) {
+                var form_data = getOpenLayerForm(layero);
+                console.log(form_data);
+                layer.close(index);
+            } // yes
+        });
+    }
+</script>
+</html>
